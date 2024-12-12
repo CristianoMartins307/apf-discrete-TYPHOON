@@ -1,0 +1,363 @@
+//GANHOS
+KP_PARALELO = 95;
+KP_SERIE =5;
+K_DAMPING = 5;
+
+//CONSTANTES (EQUACAO RECORRENCIA) DO FILTRO NOTCH
+beta0_notch = 9.996859405152093e-01;
+beta1_notch =  -1.999357673314048;
+beta2_notch = 9.996859405152093e-01;
+alfa0_notch = 1;
+alfa1_notch = -1.999357673314048;
+alfa2_notch = 9.993718810304186e-01;
+
+//CONSTANTES (EQUACAO RECORRENCIA) DOS RESSONANTES
+//900 SHUNT
+A2_15_PARALELO = 0.99994350;
+A1_15_PARALELO = -1.99674839;
+A0_15_PARALELO = 1.00000000;
+B2_15_PARALELO = -0.00098878;
+B1_15_PARALELO = 0.00000000;
+B0_15_PARALELO = 0.00098878;
+//780 SHUNT
+A2_13_PARALELO = 0.99995102;
+A1_13_PARALELO = -1.99755065;
+A0_13_PARALELO = 1.00000000;
+B2_13_PARALELO = -0.00085712;
+B1_13_PARALELO = 0.00000000;
+B0_13_PARALELO = 0.00085712;
+//660 SHUNT
+A2_11_PARALELO = 0.99995855;
+A1_11_PARALELO = -1.99823964;
+A0_11_PARALELO = 1.00000000;
+B2_11_PARALELO = -0.00072538;
+B1_11_PARALELO = 0.00000000;
+B0_11_PARALELO = 0.00072538;
+//540 SHUNT 
+A2_9_PARALELO = 0.99996608;
+A1_9_PARALELO = -1.99881524;
+A0_9_PARALELO = 1.00000000;
+B2_9_PARALELO = -0.00059358;
+B1_9_PARALELO = 0.00000000;
+B0_9_PARALELO = 0.00059358;
+//420 SHUNT 
+A2_7_PARALELO = 0.99997362;
+A1_7_PARALELO = -1.99927735;
+A0_7_PARALELO = 1.00000000;
+B2_7_PARALELO = -0.00046173;
+B1_7_PARALELO = 0.00000000;
+B0_7_PARALELO = 0.00046173;
+//300 SHUNT
+A2_5_PARALELO = 0.99998115;
+A1_5_PARALELO = -1.99962588;
+A0_5_PARALELO = 1.00000000;
+B2_5_PARALELO = -0.00032983;
+B1_5_PARALELO = 0.00000000;
+B0_5_PARALELO = 0.00032983;
+//180 SHUNT
+A2_3_PARALELO = 0.99998869;
+A1_3_PARALELO = -1.99986079;
+A0_3_PARALELO = 1.00000000;
+B2_3_PARALELO = -0.00019791;
+B1_3_PARALELO = 0.00000000;
+B0_3_PARALELO = 0.00019791;
+//600 SHUNT
+A2_1_PARALELO = 0.99999623;
+A1_1_PARALELO = -1.99998202;
+A0_1_PARALELO = 1.00000000;
+B2_1_PARALELO = -0.00006597;
+B1_1_PARALELO = 0.00000000;
+B0_1_PARALELO = 0.00006597;
+//60 SERIE
+B0_1_SERIE = 0.00022619;
+B1_1_SERIE = 0.00000000;
+B2_1_SERIE = -0.00022619;
+A0_1_SERIE = 1.00000000;
+A1_1_SERIE = -1.99998353;
+A2_1_SERIE = 0.99999774;
+//180 SERIE
+B0_3_SERIE = 0.00067856;
+B1_3_SERIE = 0.00000000;
+B2_3_SERIE = -0.00067856;
+A0_3_SERIE = 1.00000000;
+A1_3_SERIE = -1.99986531;
+A2_3_SERIE = 0.99999321;
+//300 SERIE
+B0_5_SERIE = 0.00113087;
+B1_5_SERIE = 0.00000000;
+B2_5_SERIE = -0.00113087;
+A0_5_SERIE = 1.00000000;
+A1_5_SERIE = -1.99963342;
+A2_5_SERIE = 0.99998869;
+//420 SERIE
+B0_7_SERIE = 0.00158307;
+B1_7_SERIE = 0.00000000;
+B2_7_SERIE = -0.00158307;
+A0_7_SERIE = 1.00000000;
+A1_7_SERIE = -1.99928790;
+A2_7_SERIE = 0.99998417;
+//540 SERIE
+B0_9_SERIE = 0.00203515;
+B1_9_SERIE = 0.00000000;
+B2_9_SERIE = -0.00203515;
+A0_9_SERIE = 1.00000000;
+A1_9_SERIE = -1.99882880;
+A2_9_SERIE = 0.99997965;
+//660 SERIE
+B0_11_SERIE = 0.00248704;
+B1_11_SERIE = 0.00000000;
+B2_11_SERIE = -0.00248704;
+A0_11_SERIE = 1.00000000;
+A1_11_SERIE = -1.99825621;
+A2_11_SERIE = 0.99997513;
+//780 SERIE
+B0_13_SERIE = 0.00293872;
+B1_13_SERIE = 0.00000000;
+B2_13_SERIE = -0.00293872;
+A0_13_SERIE = 1.00000000;
+A1_13_SERIE = -1.99757022;
+A2_13_SERIE = 0.99997061;
+//900 SERIE
+B0_15_SERIE = 0.00339015;
+B1_15_SERIE = 0.00000000;
+B2_15_SERIE = -0.00339015;
+A0_15_SERIE = 1.00000000;
+A1_15_SERIE = -1.99677096;
+A2_15_SERIE = 0.99996610;
+
+
+//VARIAVEIS DE SINAIS DO FILTRO NOTCH
+//NOTCH SHUNT A
+u_notch_shunt_A = 0;
+u_1_notch_shunt_A = 0;
+u_2_notch_shunt_A = 0;
+y_notch_shunt_A = 0;
+y_1_notch_shunt_A= 0;
+y_2_notch_shunt_A = 0;
+//NOTCH SHUNT B
+u_notch_shunt_B = 0;
+u_1_notch_shunt_B = 0;
+u_2_notch_shunt_B = 0;
+y_notch_shunt_B = 0;
+y_1_notch_shunt_B= 0;
+y_2_notch_shunt_B = 0;
+//NOTCH SHUNT C
+u_notch_shunt_C = 0;
+u_1_notch_shunt_C = 0;
+u_2_notch_shunt_C = 0;
+y_notch_shunt_C = 0;
+y_1_notch_shunt_C= 0;
+y_2_notch_shunt_C = 0;
+//NOTCH SERIE A
+u_notch_serie_A = 0;
+u_1_notch_serie_A = 0;
+u_2_notch_serie_A = 0;
+y_notch_serie_A = 0;
+y_1_notch_serie_A= 0;
+y_2_notch_serie_A = 0;
+//NOTCH SERIE B
+u_notch_serie_B = 0;
+u_1_notch_serie_B = 0;
+u_2_notch_serie_B = 0;
+y_notch_serie_B = 0;
+y_1_notch_serie_B= 0;
+y_2_notch_serie_B = 0;
+//NOTCH SERIE C
+u_notch_serie_C = 0;
+u_1_notch_serie_C = 0;
+u_2_notch_serie_C = 0;
+y_notch_serie_C = 0;
+y_1_notch_serie_C= 0;
+y_2_notch_serie_C = 0;
+//VARIAVEIS CALCULO DOS ERROS
+e_shunt_A =0;
+i_filter_shunt_A = 0;
+i_filter_shunt_B = 0;
+i_filter_shunt_C = 0;
+v_load_serie_A = 0;
+v_load_serie_B = 0;
+v_load_serie_C = 0;
+in_damping_A = 0;
+in_damping_B = 0;
+in_damping_C = 0;
+//VARIAVEIS CONTROLADORES
+//SHUNT A
+e_shunt_A = 0; 
+e_shunt_A_n1 = 0; 
+e_shunt_A_n2 = 0;
+u1_shunt_A = 0; 
+u1_shunt_A_n1 = 0; 
+u1_shunt_A_n2 = 0;
+u3_shunt_A = 0; 
+u3_shunt_A_n1 = 0; 
+u3_shunt_A_n2 = 0;
+u5_shunt_A = 0; 
+u5_shunt_A_n1 = 0; 
+u5_shunt_A_n2 = 0;
+u7_shunt_A = 0; 
+u7_shunt_A_n1 = 0; 
+u7_shunt_A_n2 = 0;
+u9_shunt_A = 0; 
+u9_shunt_A_n1 = 0; 
+u9_shunt_A_n2 = 0;
+u11_shunt_A = 0; 
+u11_shunt_A_n1 = 0; 
+u11_shunt_A_n2 = 0;
+u13_shunt_A = 0; 
+u13_shunt_A_n1 = 0; 
+u13_shunt_A_n2 = 0;
+u15_shunt_A = 0; 
+u15_shunt_A_n1 = 0; 
+u15_shunt_A_n2 = 0;
+utotal_shunt_A = 0;
+up_shunt_A =0;
+//SHUNT B
+e_shunt_B = 0; 
+e_shunt_B_n1 = 0; 
+e_shunt_B_n2 = 0;
+u1_shunt_B = 0; 
+u1_shunt_B_n1 = 0; 
+u1_shunt_B_n2 = 0;
+u3_shunt_B = 0; 
+u3_shunt_B_n1 = 0; 
+u3_shunt_B_n2 = 0;
+u5_shunt_B = 0; 
+u5_shunt_B_n1 = 0; 
+u5_shunt_B_n2 = 0;
+u7_shunt_B = 0; 
+u7_shunt_B_n1 = 0; 
+u7_shunt_B_n2 = 0;
+u9_shunt_B = 0; 
+u9_shunt_B_n1 = 0; 
+u9_shunt_B_n2 = 0;
+u11_shunt_B = 0; 
+u11_shunt_B_n1 = 0; 
+u11_shunt_B_n2 = 0;
+u13_shunt_B = 0; 
+u13_shunt_B_n1 = 0; 
+u13_shunt_B_n2 = 0;
+u15_shunt_B = 0; 
+u15_shunt_B_n1 = 0; 
+u15_shunt_B_n2 = 0;
+utotal_shunt_B = 0;
+up_shunt_B = 0;
+//SHUNT C
+e_shunt_C = 0; 
+e_shunt_C_n1 = 0; 
+e_shunt_C_n2 = 0;
+u1_shunt_C = 0; 
+u1_shunt_C_n1 = 0; 
+u1_shunt_C_n2 = 0;
+u3_shunt_C = 0; 
+u3_shunt_C_n1 = 0; 
+u3_shunt_C_n2 = 0;
+u5_shunt_C = 0; 
+u5_shunt_C_n1 = 0; 
+u5_shunt_C_n2 = 0;
+u7_shunt_C = 0; 
+u7_shunt_C_n1 = 0; 
+u7_shunt_C_n2 = 0;
+u9_shunt_C = 0; 
+u9_shunt_C_n1 = 0; 
+u9_shunt_C_n2 = 0;
+u11_shunt_C = 0; 
+u11_shunt_C_n1 = 0; 
+u11_shunt_C_n2 = 0;
+u13_shunt_C = 0; 
+u13_shunt_C_n1 = 0; 
+u13_shunt_C_n2 = 0;
+u15_shunt_C = 0; 
+u15_shunt_C_n1 = 0; 
+u15_shunt_C_n2 = 0;
+utotal_shunt_C = 0;
+up_shunt_C = 0;
+//SERIE A
+e_serie_A = 0; 
+e_serie_A_n1 = 0; 
+e_serie_A_n2 = 0;
+u1_serie_A = 0; 
+u1_serie_A_n1 = 0; 
+u1_serie_A_n2 = 0;
+u3_serie_A = 0; 
+u3_serie_A_n1 = 0; 
+u3_serie_A_n2 = 0;
+u5_serie_A = 0; 
+u5_serie_A_n1 = 0; 
+u5_serie_A_n2 = 0;
+u7_serie_A = 0; 
+u7_serie_A_n1 = 0; 
+u7_serie_A_n2 = 0;
+u9_serie_A = 0; 
+u9_serie_A_n1 = 0; 
+u9_serie_A_n2 = 0;
+u11_serie_A = 0; 
+u11_serie_A_n1 = 0; 
+u11_serie_A_n2 = 0;
+u13_serie_A = 0; 
+u13_serie_A_n1 = 0; 
+u13_serie_A_n2 = 0;
+u15_serie_A = 0; 
+u15_serie_A_n1 = 0; 
+u15_serie_A_n2 = 0;
+utotal_serie_A = 0;
+up_serie_A = 0;
+//SERIE B
+e_serie_B = 0; 
+e_serie_B_n1 = 0; 
+e_serie_B_n2 = 0;
+u1_serie_B = 0; 
+u1_serie_B_n1 = 0; 
+u1_serie_B_n2 = 0;
+u3_serie_B = 0; 
+u3_serie_B_n1 = 0; 
+u3_serie_B_n2 = 0;
+u5_serie_B = 0; 
+u5_serie_B_n1 = 0; 
+u5_serie_B_n2 = 0;
+u7_serie_B = 0; 
+u7_serie_B_n1 = 0; 
+u7_serie_B_n2 = 0;
+u9_serie_B = 0; 
+u9_serie_B_n1 = 0; 
+u9_serie_B_n2 = 0;
+u11_serie_B = 0; 
+u11_serie_B_n1 = 0; 
+u11_serie_B_n2 = 0;
+u13_serie_B = 0; 
+u13_serie_B_n1 = 0; 
+u13_serie_B_n2 = 0;
+u15_serie_B = 0; 
+u15_serie_B_n1 = 0; 
+u15_serie_B_n2 = 0;
+utotal_serie_B = 0;
+up_serie_B = 0;
+//SERIE C
+e_serie_C = 0; 
+e_serie_C_n1 = 0; 
+e_serie_C_n2 = 0;
+u1_serie_C = 0; 
+u1_serie_C_n1 = 0; 
+u1_serie_C_n2 = 0;
+u3_serie_C = 0; 
+u3_serie_C_n1 = 0; 
+u3_serie_C_n2 = 0;
+u5_serie_C = 0; 
+u5_serie_C_n1 = 0; 
+u5_serie_C_n2 = 0;
+u7_serie_C = 0; 
+u7_serie_C_n1 = 0; 
+u7_serie_C_n2 = 0;
+u9_serie_C = 0; 
+u9_serie_C_n1 = 0; 
+u9_serie_C_n2 = 0;
+u11_serie_C = 0; 
+u11_serie_C_n1 = 0; 
+u11_serie_C_n2 = 0;
+u13_serie_C = 0; 
+u13_serie_C_n1 = 0; 
+u13_serie_C_n2 = 0;
+u15_serie_C = 0; 
+u15_serie_C_n1 = 0; 
+u15_serie_C_n2 = 0;
+utotal_serie_C = 0;
+up_serie_C = 0;

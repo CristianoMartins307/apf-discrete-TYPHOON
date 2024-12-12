@@ -1,0 +1,214 @@
+APF_LIGADO = enable;
+if(APF_LIGADO == 1)
+{
+    //ENTRADA FILTRO NOTCH SHUNT
+    u_notch_shunt_A = I_load_A; 
+    u_notch_shunt_B = I_load_B; 
+    u_notch_shunt_C = I_load_C; 
+    //ENTRADA FILTRO NOTCH SERIE
+    u_notch_serie_A = V_Grid_A; 
+    u_notch_serie_B = V_Grid_B; 
+    u_notch_serie_C = V_Grid_C; 
+    //ATRIBUICAO DAS VARIAVEIS DA SAIDA DOS FILTROS
+    i_filter_shunt_A = I_filter_A;
+    i_filter_shunt_B = I_filter_B;
+    i_filter_shunt_C = I_filter_C;
+    v_load_serie_A = V_filter_A;
+    in_damping_A = Ic_A;
+    v_load_serie_B = V_filter_B;
+    in_damping_B = Ic_B;
+    v_load_serie_C = V_filter_C;
+    in_damping_C = Ic_C;
+
+    //FILTRO NOTCH
+    //SHUNT B
+    y_notch_shunt_A = beta0_notch*u_notch_shunt_A + beta1_notch*u_1_notch_shunt_A + beta2_notch*u_2_notch_shunt_A - alfa1_notch*y_1_notch_shunt_A - alfa2_notch*y_2_notch_shunt_A;
+    ref_I_A =y_notch_shunt_A;
+    //SHUNT B
+    y_notch_shunt_B = beta0_notch * u_notch_shunt_B + beta1_notch * u_1_notch_shunt_B + beta2_notch * u_2_notch_shunt_B - alfa1_notch * y_1_notch_shunt_B - alfa2_notch * y_2_notch_shunt_B;
+    ref_I_B =y_notch_shunt_B;
+    // SHUNT C
+    y_notch_shunt_C = beta0_notch * u_notch_shunt_C + beta1_notch * u_1_notch_shunt_C + beta2_notch * u_2_notch_shunt_C - alfa1_notch * y_1_notch_shunt_C - alfa2_notch * y_2_notch_shunt_C;
+    ref_I_C =y_notch_shunt_C;
+    // SERIE A
+    y_notch_serie_A = beta0_notch*u_notch_serie_A + beta1_notch*u_1_notch_serie_A + beta2_notch*u_2_notch_serie_A - alfa1_notch*y_1_notch_serie_A - alfa2_notch*y_2_notch_serie_A;
+    ref_V_A =y_notch_serie_A;
+    // SERIE B
+    y_notch_serie_B = beta0_notch*u_notch_serie_B + beta1_notch*u_1_notch_serie_B + beta2_notch*u_2_notch_serie_B - alfa1_notch*y_1_notch_serie_B - alfa2_notch*y_2_notch_serie_B;
+    ref_V_B =y_notch_serie_B;
+    // SERIE C
+    y_notch_serie_C = beta0_notch*u_notch_serie_C + beta1_notch*u_1_notch_serie_C + beta2_notch*u_2_notch_serie_C - alfa1_notch*y_1_notch_serie_C - alfa2_notch*y_2_notch_serie_C;
+    ref_V_C =y_notch_serie_C;
+
+    //CALCULO DOS ERROS
+    e_shunt_A = y_notch_shunt_A - i_filter_shunt_A;
+    e_shunt_B = y_notch_shunt_B - i_filter_shunt_B;
+    e_shunt_C = y_notch_shunt_C - i_filter_shunt_C;
+    // SERIE A
+    e_serie_A = y_notch_serie_A - v_load_serie_A - (K_DAMPING * in_damping_A) ;
+    // SERIE B
+    e_serie_B = y_notch_serie_B - v_load_serie_B - (K_DAMPING * in_damping_B) ;
+    // SERIE C
+    e_serie_C = y_notch_serie_C - v_load_serie_C - (K_DAMPING * in_damping_C) ;
+
+    //CALCULO CONTROLE
+    //SHUNT A
+    //60Hz
+    u1_shunt_A = e_shunt_A*B0_1_PARALELO + e_shunt_A_n1*B1_1_PARALELO + e_shunt_A_n2*B2_1_PARALELO - u1_shunt_A_n1*A1_1_PARALELO  - u1_shunt_A_n2*A2_1_PARALELO;
+    //60Hz
+    u3_shunt_A = e_shunt_A*B0_3_PARALELO + e_shunt_A_n1*B1_3_PARALELO + e_shunt_A_n2*B2_3_PARALELO - u3_shunt_A_n1*A1_3_PARALELO  - u3_shunt_A_n2*A2_3_PARALELO;
+    //300Hz
+    u5_shunt_A = e_shunt_A*B0_5_PARALELO + e_shunt_A_n1*B1_5_PARALELO + e_shunt_A_n2*B2_5_PARALELO - u5_shunt_A_n1*A1_5_PARALELO  - u5_shunt_A_n2*A2_5_PARALELO;
+    //420Hz
+    u7_shunt_A = e_shunt_A*B0_7_PARALELO + e_shunt_A_n1*B1_7_PARALELO + e_shunt_A_n2*B2_7_PARALELO - u7_shunt_A_n1*A1_7_PARALELO  - u7_shunt_A_n2*A2_7_PARALELO;
+    //540Hz
+    u9_shunt_A = e_shunt_A*B0_9_PARALELO + e_shunt_A_n1*B1_9_PARALELO + e_shunt_A_n2*B2_9_PARALELO - u9_shunt_A_n1*A1_9_PARALELO  - u9_shunt_A_n2*A2_9_PARALELO;
+    //660Hz
+    u11_shunt_A = e_shunt_A*B0_11_PARALELO + e_shunt_A_n1*B1_11_PARALELO + e_shunt_A_n2*B2_11_PARALELO - u11_shunt_A_n1*A1_11_PARALELO  - u11_shunt_A_n2*A2_11_PARALELO;
+    //780Hz
+    u13_shunt_A = e_shunt_A*B0_13_PARALELO + e_shunt_A_n1*B1_13_PARALELO + e_shunt_A_n2*B2_13_PARALELO - u13_shunt_A_n1*A1_13_PARALELO  - u13_shunt_A_n2*A2_13_PARALELO;
+    //780Hz
+    u15_shunt_A = e_shunt_A*B0_15_PARALELO + e_shunt_A_n1*B1_15_PARALELO + e_shunt_A_n2*B2_15_PARALELO - u15_shunt_A_n1*A1_15_PARALELO  - u15_shunt_A_n2*A2_15_PARALELO;
+    up_shunt_A=KP_PARALELO*e_shunt_A; 
+    utotal_shunt_A  = u1_shunt_A  + u3_shunt_A  + u5_shunt_A  + u7_shunt_A  + u9_shunt_A  + u11_shunt_A  + u13_shunt_A  +u15_shunt_A  + up_shunt_A ;
+    Gc_shunt_A = utotal_shunt_A;
+    // SHUNT B
+    // 60Hz
+    u1_shunt_B = e_shunt_B * B0_1_PARALELO + e_shunt_B_n1 * B1_1_PARALELO + e_shunt_B_n2 * B2_1_PARALELO - u1_shunt_B_n1 * A1_1_PARALELO - u1_shunt_B_n2 * A2_1_PARALELO;
+    // 60Hz
+    u3_shunt_B = e_shunt_B * B0_3_PARALELO + e_shunt_B_n1 * B1_3_PARALELO + e_shunt_B_n2 * B2_3_PARALELO - u3_shunt_B_n1 * A1_3_PARALELO - u3_shunt_B_n2 * A2_3_PARALELO;
+    // 300Hz
+    u5_shunt_B = e_shunt_B * B0_5_PARALELO + e_shunt_B_n1 * B1_5_PARALELO + e_shunt_B_n2 * B2_5_PARALELO - u5_shunt_B_n1 * A1_5_PARALELO - u5_shunt_B_n2 * A2_5_PARALELO;
+    // 420Hz
+    u7_shunt_B = e_shunt_B * B0_7_PARALELO + e_shunt_B_n1 * B1_7_PARALELO + e_shunt_B_n2 * B2_7_PARALELO - u7_shunt_B_n1 * A1_7_PARALELO - u7_shunt_B_n2 * A2_7_PARALELO;
+    // 540Hz
+    u9_shunt_B = e_shunt_B * B0_9_PARALELO + e_shunt_B_n1 * B1_9_PARALELO + e_shunt_B_n2 * B2_9_PARALELO - u9_shunt_B_n1 * A1_9_PARALELO - u9_shunt_B_n2 * A2_9_PARALELO;
+    // 660Hz
+    u11_shunt_B = e_shunt_B * B0_11_PARALELO + e_shunt_B_n1 * B1_11_PARALELO + e_shunt_B_n2 * B2_11_PARALELO - u11_shunt_B_n1 * A1_11_PARALELO - u11_shunt_B_n2 * A2_11_PARALELO;
+    // 780Hz
+    u13_shunt_B = e_shunt_B * B0_13_PARALELO + e_shunt_B_n1 * B1_13_PARALELO + e_shunt_B_n2 * B2_13_PARALELO - u13_shunt_B_n1 * A1_13_PARALELO - u13_shunt_B_n2 * A2_13_PARALELO;
+    // 780Hz
+    u15_shunt_B = e_shunt_B * B0_15_PARALELO + e_shunt_B_n1 * B1_15_PARALELO + e_shunt_B_n2 * B2_15_PARALELO - u15_shunt_B_n1 * A1_15_PARALELO - u15_shunt_B_n2 * A2_15_PARALELO;
+    up_shunt_B = KP_PARALELO * e_shunt_B; 
+    utotal_shunt_B = u1_shunt_B + u3_shunt_B + u5_shunt_B + u7_shunt_B + u9_shunt_B + u11_shunt_B + u13_shunt_B + u15_shunt_B + up_shunt_B;
+    Gc_shunt_B = utotal_shunt_B;
+    // SHUNT C
+    // 60Hz
+    u1_shunt_C = e_shunt_C * B0_1_PARALELO + e_shunt_C_n1 * B1_1_PARALELO + e_shunt_C_n2 * B2_1_PARALELO - u1_shunt_C_n1 * A1_1_PARALELO - u1_shunt_C_n2 * A2_1_PARALELO;
+    // 60Hz
+    u3_shunt_C = e_shunt_C * B0_3_PARALELO + e_shunt_C_n1 * B1_3_PARALELO + e_shunt_C_n2 * B2_3_PARALELO - u3_shunt_C_n1 * A1_3_PARALELO - u3_shunt_C_n2 * A2_3_PARALELO;
+    // 300Hz
+    u5_shunt_C = e_shunt_C * B0_5_PARALELO + e_shunt_C_n1 * B1_5_PARALELO + e_shunt_C_n2 * B2_5_PARALELO - u5_shunt_C_n1 * A1_5_PARALELO - u5_shunt_C_n2 * A2_5_PARALELO;
+    // 420Hz
+    u7_shunt_C = e_shunt_C * B0_7_PARALELO + e_shunt_C_n1 * B1_7_PARALELO + e_shunt_C_n2 * B2_7_PARALELO - u7_shunt_C_n1 * A1_7_PARALELO - u7_shunt_C_n2 * A2_7_PARALELO;
+    // 540Hz
+    u9_shunt_C = e_shunt_C * B0_9_PARALELO + e_shunt_C_n1 * B1_9_PARALELO + e_shunt_C_n2 * B2_9_PARALELO - u9_shunt_C_n1 * A1_9_PARALELO - u9_shunt_C_n2 * A2_9_PARALELO;
+    // 660Hz
+    u11_shunt_C = e_shunt_C * B0_11_PARALELO + e_shunt_C_n1 * B1_11_PARALELO + e_shunt_C_n2 * B2_11_PARALELO - u11_shunt_C_n1 * A1_11_PARALELO - u11_shunt_C_n2 * A2_11_PARALELO;
+    // 780Hz
+    u13_shunt_C = e_shunt_C * B0_13_PARALELO + e_shunt_C_n1 * B1_13_PARALELO + e_shunt_C_n2 * B2_13_PARALELO - u13_shunt_C_n1 * A1_13_PARALELO - u13_shunt_C_n2 * A2_13_PARALELO;
+    // 780Hz
+    u15_shunt_C = e_shunt_C * B0_15_PARALELO + e_shunt_C_n1 * B1_15_PARALELO + e_shunt_C_n2 * B2_15_PARALELO - u15_shunt_C_n1 * A1_15_PARALELO - u15_shunt_C_n2 * A2_15_PARALELO;
+    up_shunt_C = KP_PARALELO * e_shunt_C; 
+    utotal_shunt_C = u1_shunt_C + u3_shunt_C + u5_shunt_C + u7_shunt_C + u9_shunt_C + u11_shunt_C + u13_shunt_C + u15_shunt_C + up_shunt_C;
+    Gc_shunt_C = utotal_shunt_C;
+
+    // SERIE A
+    // 60Hz
+    u1_serie_A = e_serie_A * B0_1_SERIE + e_serie_A_n1 * B1_1_SERIE + e_serie_A_n2 * B2_1_SERIE - u1_serie_A_n1 * A1_1_SERIE - u1_serie_A_n2 * A2_1_SERIE;
+    // 60Hz
+    u3_serie_A = e_serie_A * B0_3_SERIE + e_serie_A_n1 * B1_3_SERIE + e_serie_A_n2 * B2_3_SERIE - u3_serie_A_n1 * A1_3_SERIE - u3_serie_A_n2 * A2_3_SERIE;
+    // 300Hz
+    u5_serie_A = e_serie_A * B0_5_SERIE + e_serie_A_n1 * B1_5_SERIE + e_serie_A_n2 * B2_5_SERIE - u5_serie_A_n1 * A1_5_SERIE - u5_serie_A_n2 * A2_5_SERIE;
+    // 420Hz
+    u7_serie_A = e_serie_A * B0_7_SERIE + e_serie_A_n1 * B1_7_SERIE + e_serie_A_n2 * B2_7_SERIE - u7_serie_A_n1 * A1_7_SERIE - u7_serie_A_n2 * A2_7_SERIE;
+    // 540Hz
+    u9_serie_A = e_serie_A * B0_9_SERIE + e_serie_A_n1 * B1_9_SERIE + e_serie_A_n2 * B2_9_SERIE - u9_serie_A_n1 * A1_9_SERIE - u9_serie_A_n2 * A2_9_SERIE;
+    // 660Hz
+    u11_serie_A = e_serie_A * B0_11_SERIE + e_serie_A_n1 * B1_11_SERIE + e_serie_A_n2 * B2_11_SERIE - u11_serie_A_n1 * A1_11_SERIE - u11_serie_A_n2 * A2_11_SERIE;
+    // 780Hz
+    u13_serie_A = e_serie_A * B0_13_SERIE + e_serie_A_n1 * B1_13_SERIE + e_serie_A_n2 * B2_13_SERIE - u13_serie_A_n1 * A1_13_SERIE - u13_serie_A_n2 * A2_13_SERIE;
+    // 780Hz
+    u15_serie_A = e_serie_A * B0_15_SERIE + e_serie_A_n1 * B1_15_SERIE + e_serie_A_n2 * B2_15_SERIE - u15_serie_A_n1 * A1_15_SERIE - u15_serie_A_n2 * A2_15_SERIE;
+    up_serie_A = KP_SERIE * e_serie_A; 
+    utotal_serie_A = u1_serie_A + u3_serie_A + u5_serie_A + u7_serie_A + u9_serie_A + u11_serie_A + u13_serie_A + u15_serie_A + up_serie_A;
+    Gc_serie_A = utotal_serie_A;
+    // SERIE B
+    // 60Hz
+    u1_serie_B = e_serie_B * B0_1_SERIE + e_serie_B_n1 * B1_1_SERIE + e_serie_B_n2 * B2_1_SERIE - u1_serie_B_n1 * A1_1_SERIE - u1_serie_B_n2 * A2_1_SERIE;
+    // 60Hz
+    u3_serie_B = e_serie_B * B0_3_SERIE + e_serie_B_n1 * B1_3_SERIE + e_serie_B_n2 * B2_3_SERIE - u3_serie_B_n1 * A1_3_SERIE - u3_serie_B_n2 * A2_3_SERIE;
+    // 300Hz
+    u5_serie_B = e_serie_B * B0_5_SERIE + e_serie_B_n1 * B1_5_SERIE + e_serie_B_n2 * B2_5_SERIE - u5_serie_B_n1 * A1_5_SERIE - u5_serie_B_n2 * A2_5_SERIE;
+    // 420Hz
+    u7_serie_B = e_serie_B * B0_7_SERIE + e_serie_B_n1 * B1_7_SERIE + e_serie_B_n2 * B2_7_SERIE - u7_serie_B_n1 * A1_7_SERIE - u7_serie_B_n2 * A2_7_SERIE;
+    // 540Hz
+    u9_serie_B = e_serie_B * B0_9_SERIE + e_serie_B_n1 * B1_9_SERIE + e_serie_B_n2 * B2_9_SERIE - u9_serie_B_n1 * A1_9_SERIE - u9_serie_B_n2 * A2_9_SERIE;
+    // 660Hz
+    u11_serie_B = e_serie_B * B0_11_SERIE + e_serie_B_n1 * B1_11_SERIE + e_serie_B_n2 * B2_11_SERIE - u11_serie_B_n1 * A1_11_SERIE - u11_serie_B_n2 * A2_11_SERIE;
+    // 780Hz
+    u13_serie_B = e_serie_B * B0_13_SERIE + e_serie_B_n1 * B1_13_SERIE + e_serie_B_n2 * B2_13_SERIE - u13_serie_B_n1 * A1_13_SERIE - u13_serie_B_n2 * A2_13_SERIE;
+    // 780Hz
+    u15_serie_B = e_serie_B * B0_15_SERIE + e_serie_B_n1 * B1_15_SERIE + e_serie_B_n2 * B2_15_SERIE - u15_serie_B_n1 * A1_15_SERIE - u15_serie_B_n2 * A2_15_SERIE;
+    up_serie_B = KP_SERIE * e_serie_B; 
+    utotal_serie_B = u1_serie_B + u3_serie_B + u5_serie_B + u7_serie_B + u9_serie_B + u11_serie_B + u13_serie_B + u15_serie_B + up_serie_B;
+    Gc_serie_B = utotal_serie_B;
+    // SERIE C
+    // 60Hz
+    u1_serie_C = e_serie_C * B0_1_SERIE + e_serie_C_n1 * B1_1_SERIE + e_serie_C_n2 * B2_1_SERIE - u1_serie_C_n1 * A1_1_SERIE - u1_serie_C_n2 * A2_1_SERIE;
+    // 60Hz
+    u3_serie_C = e_serie_C * B0_3_SERIE + e_serie_C_n1 * B1_3_SERIE + e_serie_C_n2 * B2_3_SERIE - u3_serie_C_n1 * A1_3_SERIE - u3_serie_C_n2 * A2_3_SERIE;
+    // 300Hz
+    u5_serie_C = e_serie_C * B0_5_SERIE + e_serie_C_n1 * B1_5_SERIE + e_serie_C_n2 * B2_5_SERIE - u5_serie_C_n1 * A1_5_SERIE - u5_serie_C_n2 * A2_5_SERIE;
+    // 420Hz
+    u7_serie_C = e_serie_C * B0_7_SERIE + e_serie_C_n1 * B1_7_SERIE + e_serie_C_n2 * B2_7_SERIE - u7_serie_C_n1 * A1_7_SERIE - u7_serie_C_n2 * A2_7_SERIE;
+    // 540Hz
+    u9_serie_C = e_serie_C * B0_9_SERIE + e_serie_C_n1 * B1_9_SERIE + e_serie_C_n2 * B2_9_SERIE - u9_serie_C_n1 * A1_9_SERIE - u9_serie_C_n2 * A2_9_SERIE;
+    // 660Hz
+    u11_serie_C = e_serie_C * B0_11_SERIE + e_serie_C_n1 * B1_11_SERIE + e_serie_C_n2 * B2_11_SERIE - u11_serie_C_n1 * A1_11_SERIE - u11_serie_C_n2 * A2_11_SERIE;
+    // 780Hz
+    u13_serie_C = e_serie_C * B0_13_SERIE + e_serie_C_n1 * B1_13_SERIE + e_serie_C_n2 * B2_13_SERIE - u13_serie_C_n1 * A1_13_SERIE - u13_serie_C_n2 * A2_13_SERIE;
+    // 780Hz
+    u15_serie_C = e_serie_C * B0_15_SERIE + e_serie_C_n1 * B1_15_SERIE + e_serie_C_n2 * B2_15_SERIE - u15_serie_C_n1 * A1_15_SERIE - u15_serie_C_n2 * A2_15_SERIE;
+    up_serie_C = KP_SERIE * e_serie_C; 
+    utotal_serie_C = u1_serie_C + u3_serie_C + u5_serie_C + u7_serie_C + u9_serie_C + u11_serie_C + u13_serie_C + u15_serie_C + up_serie_C;
+    Gc_serie_C = utotal_serie_C;
+}
+else{
+    //ENTRADA FILTRO NOTCH SHUNT
+    u_notch_shunt_A = 0; 
+    u_notch_shunt_B = 0; 
+    u_notch_shunt_C = 0; 
+    //ENTRADA FILTRO NOTCH SERIE
+    u_notch_serie_A = 0; 
+    u_notch_serie_B = 0; 
+    u_notch_serie_C = 0; 
+    //ATRIBUICAO DAS VARIAVEIS DA SAIDA DOS FILTROS
+    i_filter_shunt_A = 0;
+    i_filter_shunt_B = 0;
+    i_filter_shunt_C = 0;
+    v_load_serie_A = 0;
+    in_damping_A = 0;
+    v_load_serie_B = 0;
+    in_damping_B = 0;
+    v_load_serie_C = 0;
+    in_damping_C = 0;
+        //CALCULO DOS ERROS
+    e_shunt_A = 0;
+    e_shunt_B =0;
+    e_shunt_C =0;
+    // SERIE A
+    e_serie_A = 0 ;
+    // SERIE B
+    e_serie_B = 0 ;
+    // SERIE C
+    e_serie_C = 0 ;
+
+
+    Gc_serie_A = 0;
+    Gc_serie_B = 0;
+    Gc_serie_C = 0;
+    Gc_shunt_A = 0;
+    Gc_shunt_B = 0;
+    Gc_shunt_C = 0;
+}
